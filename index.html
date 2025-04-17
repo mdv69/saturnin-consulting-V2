@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saturnin Consulting</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background-color: #fdf6f1;
+      font-family: 'Gilda Display', serif;
+    }
+
+    .main-logo {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 80px;
+      transition: top 1s ease, transform 1s ease;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .main-logo.fixed {
+      position: fixed;
+      top: 60px;
+      transform: translateX(-50%);
+    }
+
+    .big-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 160px;
+      cursor: pointer;
+      transition: opacity 0.5s ease;
+      z-index: 5;
+    }
+
+    .big-logo.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scroll-container {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .scroll-container.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .menu-item {
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #0047ff;
+      opacity: 0.3;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .menu-item.middle {
+      font-size: 28px;
+      color: #0022aa;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGO PRINCIPAL (fixé en haut après scroll, en bas par défaut) -->
+  <img src="logo.png" alt="Main Logo" class="main-logo" id="mainLogo" onclick="enterScrollMenu()" />
+
+  <!-- GROS LOGO CENTRAL -->
+  <img src="consulting_project-removebg-preview.png" alt="Big Logo" class="big-logo" id="bigLogo" onclick="enterScrollMenu()" />
+
+  <!-- CONTAINER DU MENU -->
+  <div class="scroll-container" id="menuContainer">
+    <div class="menu" id="menu"></div>
+  </div>
+
+  <script>
+    const labels = [
+      "Contact", "AI & Innovation", "Social Medias", "Storytelling",
+      "Identity", "(Re)Branding", "Portfolio", "Who We Are", "Hospitality"
+    ];
+    let currentIndex = 0;
+
+    const menu = document.getElementById("menu");
+    const menuContainer = document.getElementById("menuContainer");
+    const mainLogo = document.getElementById("mainLogo");
+    const bigLogo = document.getElementById("bigLogo");
+
+    function renderMenu() {
+      menu.innerHTML = '';
+      for (let i = -3; i <= 3; i++) {
+        const item = document.createElement("div");
+        const label = labels[(currentIndex + i + labels.length) % labels.length];
+        item.className = "menu-item";
+        if (i === 0) item.classList.add("middle");
+        item.textContent = label;
+        item.onclick = () => alert(label + " - content coming soon!");
+        menu.appendChild(item);
+      }
+    }
+
+    function enterScrollMenu() {
+      menuContainer.classList.add("visible");
+      bigLogo.classList.add("hidden");
+      mainLogo.classList.add("fixed");
+    }
+
+    let lastScrollTime = 0;
+    window.addEventListener("wheel", (e) => {
+      const now = Date.now();
+      if (now - lastScrollTime < 200) return;
+      lastScrollTime = now;
+
+      if (!menuContainer.classList.contains("visible")) {
+        enterScrollMenu();
+      }
+
+      if (e.deltaY > 0) {
+        currentIndex = (currentIndex + 1) % labels.length;
+      } else {
+        currentIndex = (currentIndex - 1 + labels.length) % labels.length;
+      }
+      renderMenu();
+    });
+
+    renderMenu();
+  </script>
+</body>
+</html>
