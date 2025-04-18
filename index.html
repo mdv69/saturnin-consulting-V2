@@ -15,23 +15,22 @@
     }
 
     .main-logo {
-      width: 80px;
+      width: 120px;
       position: absolute;
-      bottom: 40px;
+      top: calc(100% - 80px); /* tout en bas mais visible */
       left: 50%;
       transform: translateX(-50%);
-      transition: all 1.6s ease-in-out;
+      transition: top 1.8s ease;
       z-index: 10;
       cursor: pointer;
     }
 
 
+
     .main-logo.fixed {
-      position: fixed;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 60px; /* destination quand scrollé */
     }
+
 
 
     .big-logo {
