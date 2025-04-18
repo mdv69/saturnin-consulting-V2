@@ -91,7 +91,7 @@
 </head>
 <body>
   <!-- LOGO PRINCIPAL (fixé en haut après scroll, en bas par défaut) -->
-  <img src="logo.png" alt="Main Logo" class="main-logo" id="mainLogo" onclick="enterScrollMenu()" />
+  <img src="logo.png" alt="Main Logo" class="main-logo" id="mainLogo" onclick="toggleMode()" />
 
   <!-- GROS LOGO CENTRAL -->
   <img src="full-logo.png" alt="Big Logo" class="big-logo" id="bigLogo" onclick="enterScrollMenu()" />
@@ -123,6 +123,19 @@
         item.textContent = label;
         item.onclick = () => alert(label + " - content coming soon!");
         menu.appendChild(item);
+      }
+    }
+    function toggleMode() {
+      const isInScroll = menuContainer.classList.contains("visible");
+    
+      if (isInScroll) {
+        // 🔙 Retour à l'accueil
+        menuContainer.classList.remove("visible");
+        bigLogo.classList.remove("hidden");
+        mainLogo.classList.remove("fixed");
+      } else {
+        // 🔛 Aller au scroll menu
+        enterScrollMenu();
       }
     }
 
